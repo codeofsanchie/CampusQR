@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase-config";
+import { Modal } from "react-bootstrap";
 
 function Login() {
   const navigate = useNavigate();
@@ -21,7 +22,13 @@ function Login() {
     pass: "",
   });
 
-  const [errorMsg, setErrorMsg] = useState("");
+  // const [errorMsg, setErrorMsg] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState({
+    header: "",
+    message: "",
+    type: "",
+  });
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   const handleSubmission = () => {
@@ -53,30 +60,39 @@ function Login() {
       return;
     }
 
-    setErrorMsg("");
+    if (!navigator.onLine) {
+      setModalMessage({
+        header: "Error!!",
+        message:
+          "You are currently offline. Please try again when you're online.",
+        type: "bg-danger",
+      });
+      setShowModal(true); // Show the modal with the offline message
+      return;
+    }
+
+    setModalMessage(""); // Clear modal message
+    setShowModal(false); // Hide the modal
 
     setSubmitButtonDisabled(true);
-
     signInWithEmailAndPassword(auth, values.email, values.pass)
       .then(async (res) => {
         setSubmitButtonDisabled(false);
-        navigate("/Register");
+        navigate("/dashboard");
       })
       .catch((err) => {
         setSubmitButtonDisabled(false);
-        if (
-          err.code === "auth/user-not-found" ||
-          err.code === "auth/wrong-password"
-        ) {
-          setErrorMsg("Invalid email or password");
-        } else {
-          setErrorMsg(err.message);
-        }
+        setModalMessage({
+          header: "Error!!",
+          message: "Invalid email or password",
+          type: "bg-danger",
+        });
+        setShowModal(true); // Show the modal with the error message
         setTimeout(() => {
-          setErrorMsg("");
+          setShowModal(false); // Hide the modal after a delay
+          setModalMessage(""); // Clear modal message
         }, 3000);
       });
-      
   };
 
   return (
@@ -89,11 +105,20 @@ function Login() {
             </div>
             <div className="card-body">
               <form className="row g-3 needs-validation" method="POST">
-              {errorMsg && (
-                    <div className="alert alert-danger text-center mt-3" role="alert">
-                      {errorMsg}
-                    </div>
-                  )}
+                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                  <div>
+                    <Modal.Header className={modalMessage.type} closeButton>
+                      <Modal.Title className="text-center">
+                        {modalMessage.header}
+                      </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Footer
+                      className={`${modalMessage.type} justify-content-center`}
+                    >
+                      {modalMessage.message}
+                    </Modal.Footer>
+                  </div>
+                </Modal>
                 {/* Email input */}
                 <div className="col-md-6">
                   <label
@@ -154,7 +179,10 @@ function Login() {
 
                 {/* Password input */}
                 <div className="col-md-6">
-                  <label htmlFor="validationDefault01" className="form-label fw-bold">
+                  <label
+                    htmlFor="validationDefault01"
+                    className="form-label fw-bold"
+                  >
                     Password
                   </label>
                   <input
@@ -232,7 +260,12 @@ function Login() {
                 <p className="ms-2 p-3 text-center">
                   Don't have an account?&nbsp;
                   <span>
-                    <Link to="/Register">Sign up</Link>
+                    <Link
+                      className="icon-link justify-content-center badge rounded-pill bg-info"
+                      to="/Register"
+                    >
+                      Sign up
+                    </Link>
                   </span>
                 </p>
               </form>
@@ -243,5 +276,4 @@ function Login() {
     </div>
   );
 }
-
 export default Login;

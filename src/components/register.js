@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "./firebase-config";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Modal } from "react-bootstrap";
 
 //--------------------------------------------------------------------------------------------------------------------------//
 
-const Register = (props) => {
+const Register = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -22,10 +24,17 @@ const Register = (props) => {
     confirmPassword: "",
     contact: "",
   });
-  const [registrationAlert, setRegistrationAlert] = useState({
+  // const [registrationAlert, setRegistrationAlert] = useState({
+  //   message: "",
+  //   type: "",
+  // });
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState({
+    header:"",
     message: "",
     type: "",
   });
+
   let name, value;
 
   const getUserData = (event) => {
@@ -88,9 +97,6 @@ const Register = (props) => {
 
   const postUserData = async (e) => {
     e.preventDefault();
-
-    
-
     const { firstName, lastName, email, branch, contact } = user;
     const isValid = validateForm(); // Call the validateForm function to check form validity
 
@@ -111,7 +117,6 @@ const Register = (props) => {
           }),
         }
       );
-
       if (res) {
         setUser({
           firstName: "",
@@ -120,21 +125,24 @@ const Register = (props) => {
           branch: "",
           contact: "",
         });
-
-        setRegistrationAlert({
+        setModalMessage({
+          header : "Success!!",
           message: "Data Stored Successfully",
-          type: "success",
+          type: "bg-success",
         });
+        setShowModal(true);
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       }
     } else {
-      setRegistrationAlert({
+      setModalMessage({
+        header : "Error!!",
         message: "Please Fill All The Details !!!",
-        type: "danger",
+        type: "bg-danger",
       });
+      setShowModal(true);
     }
-    setTimeout(() => {
-      setRegistrationAlert("");
-    }, 3000);
   };
 
   //-----------------------------------------------------------------------------------------------------------------------------//
@@ -158,26 +166,23 @@ const Register = (props) => {
   return (
     <>
       <div className="bg-light-subtle mt-5">
-        <div className="container mt-5">
+        <div className="container mt-5" data-bs-theme="dark">
           <div className="row justify-content-center">
             <div className="col-md-6">
               <div className="card">
                 <div className="card-header bg-primary text-light mb-3 text-center h2">
                   Register
                 </div>
-
+                <Modal show={showModal} onHide={() => setShowModal(false)}>
+                  <div>
+                  <Modal.Header className={modalMessage.type} closeButton>
+                    <Modal.Title className="text-center">{modalMessage.header}</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Footer className={`${modalMessage.type} justify-content-center`}>{modalMessage.message}</Modal.Footer>
+                  </div>    
+                </Modal>
                 <div className="card-body">
-                {registrationAlert.message && (
-                      <div
-                        className={`alert alert-${registrationAlert.type} justify-content-center w-50`}
-                        role="alert"
-                      >
-                        {registrationAlert.message}
-                      </div>
-                    )}
                   <form className="row g-3 needs-validation" method="POST">
-                    
-
                     <div className="col-md-6">
                       <label
                         htmlFor="validationDefault01"
@@ -318,7 +323,7 @@ const Register = (props) => {
                         for="validationDefaultUsername"
                         className="form-label fw-bold"
                       >
-                        Confirm Your Email
+                        Confirm Email
                       </label>
                       <div className="input-group">
                         <span
@@ -379,7 +384,10 @@ const Register = (props) => {
                     </div>
 
                     <div className="col-md-6">
-                      <label for="validationDefault03" className="form-label fw-bold">
+                      <label
+                        for="validationDefault03"
+                        className="form-label fw-bold"
+                      >
                         Password
                       </label>
                       <input
@@ -615,7 +623,7 @@ const Register = (props) => {
                         className="btn btn-primary justify-content-center"
                         onClick={async (event) => {
                           event.preventDefault();
-                          validateForm(event);
+                          validateForm(event); // To validate all the fields
                           await registerUser(event); // Wait for registerUser to complete
                           postUserData(event); // Call postUserData after registerUser is done
                         }}
@@ -625,7 +633,10 @@ const Register = (props) => {
                     </div>
                     <p className="ms-2 p-3 text-center">
                       Already have an account?&nbsp;
-                      <Link className="icon-link justify-content-center" to="/">
+                      <Link
+                        className="icon-link justify-content-center badge rounded-pill bg-info"
+                        to="/"
+                      >
                         Click here
                       </Link>
                     </p>
