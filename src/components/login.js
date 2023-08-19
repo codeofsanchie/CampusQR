@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { Modal } from "react-bootstrap";
 
+
 function Login() {
   const navigate = useNavigate();
 
@@ -268,6 +269,18 @@ function Login() {
                     </Link>
                   </span>
                 </p>
+
+                <p className="ms-2 p-3 text-center">
+                  <span>
+                    <Link
+                      className="icon-link justify-content-center"
+                      to="/reset-password"
+                    >
+                      Forget password ?
+                    </Link>
+                  </span>
+                </p>
+
               </form>
             </div>
           </div>
