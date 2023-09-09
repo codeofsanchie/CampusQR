@@ -62,7 +62,7 @@ const Register = () => {
     if (!user.email) {
       errors.email = "Email is required";
     } else if (
-      !user.email.match(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
+      !user.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
     ) {
       errors.email = "Invalid email";
     }
@@ -286,7 +286,7 @@ const Register = () => {
 
                             // Check if emailValue matches the regular expression for a valid email
                             const isEmailValid =
-                              /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/.test(
+                            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
                                 emailValue
                               );
 

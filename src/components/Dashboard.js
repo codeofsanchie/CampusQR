@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from './firebase-config';
-import { getFirestore, collection, doc, getDoc } from 'firebase/firestore';
+import { getFirestore } from 'firebase/firestore';
+// import { collection, doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Dashboard = () => {
@@ -13,20 +14,20 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     auth.signOut().then(() => {
-      navigate('/login'); // Navigate to login page after logout
+      navigate('/'); // Navigate to login page after logout
     });
   };
 
   useEffect(() => {
-    if (user) {
-      const userDocRef = doc(collection(db, 'users'), user.uid);
+    // if (user) {
+    //   const userDocRef = doc(collection(db, 'users'), user.uid);
 
-      getDoc(userDocRef).then((docSnap) => {
-        if (docSnap.exists()) {
-          setUserData(docSnap.data());
-        }
-      });
-    }
+    //   getDoc(userDocRef).then((docSnap) => {
+    //     if (docSnap.exists()) {
+    //       setUserData(docSnap.data());
+    //     }
+    //   });
+    // }
   }, [user, db]);
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { Modal } from "react-bootstrap";
@@ -41,7 +41,7 @@ function Login() {
       errors.email = "Email is required";
       isValid = false;
     } else if (
-      !values.email.match(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/)
+      !values.email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
     ) {
       errors.email = "Invalid email format";
       isValid = false;
@@ -76,6 +76,12 @@ function Login() {
     setShowModal(false); // Hide the modal
 
     setSubmitButtonDisabled(true);
+
+    if (values.email === "admin@example.com" && values.pass === "adminpassword") {
+      // If the credentials match, redirect to a special page
+      navigate("/admin"); 
+    } 
+    else {
     signInWithEmailAndPassword(auth, values.email, values.pass)
       .then(async (res) => {
         setSubmitButtonDisabled(false);
@@ -94,6 +100,7 @@ function Login() {
           setModalMessage(""); // Clear modal message
         }, 3000);
       });
+    }
   };
 
   return (
@@ -146,7 +153,7 @@ function Login() {
                           email: event.target.value,
                         }));
                         const isValid = !!event.target.value.match(
-                          /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/
+                          /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
                         );
                         if (!isValid) {
                           setValidationErrors((prev) => ({
