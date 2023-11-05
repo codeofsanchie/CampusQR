@@ -1,9 +1,4 @@
-
-  .App {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  table {
-    margin-top: 30px;
+  .customcontainer{
+    width: 110%;
+    margin: auto;
   }

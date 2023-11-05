@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase-config";
 import { Modal } from "react-bootstrap";
@@ -77,37 +77,42 @@ function Login() {
 
     setSubmitButtonDisabled(true);
 
-    if (values.email === "admin@example.com" && values.pass === "adminpassword") {
+    if (values.email === "aartiadmin@gmail.com" && values.pass === "admin123") {
       // If the credentials match, redirect to a special page
-      navigate("/admin"); 
-    } 
+      navigate('/admin', { state: { adminName: 'Admin Name' } });
+    }
     else {
-    signInWithEmailAndPassword(auth, values.email, values.pass)
-      .then(async (res) => {
-        setSubmitButtonDisabled(false);
-        navigate("/dashboard");
-      })
-      .catch((err) => {
-        setSubmitButtonDisabled(false);
-        setModalMessage({
-          header: "Error!!",
-          message: "Invalid email or password",
-          type: "bg-danger",
+      signInWithEmailAndPassword(auth, values.email, values.pass)
+        .then(async (res) => {
+          setSubmitButtonDisabled(false);
+          navigate("/dashboard");
+        })
+        .catch((err) => {
+          setSubmitButtonDisabled(false);
+          setModalMessage({
+            header: "Error!!",
+            message: "Invalid email or password",
+            type: "bg-danger",
+          });
+          setShowModal(true); // Show the modal with the error message
+          setTimeout(() => {
+            setShowModal(false); // Hide the modal after a delay
+            setModalMessage(""); // Clear modal message
+          }, 3000);
         });
-        setShowModal(true); // Show the modal with the error message
-        setTimeout(() => {
-          setShowModal(false); // Hide the modal after a delay
-          setModalMessage(""); // Clear modal message
-        }, 3000);
-      });
     }
   };
 
   return (
-    <div className="container mt-5">
+      <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-6">
+
+      <span className="title"> Campus QR </span>
+
           <div className="card">
+
+
             <div className="card-header bg-primary text-light mb-3 text-center h2">
               Login
             </div>
@@ -140,13 +145,12 @@ function Login() {
                       @
                     </span>
                     <input
-                      className={`form-control ${
-                        validationErrors.email
+                      className={`form-control ${validationErrors.email
                           ? "is-invalid"
                           : fieldValidity.email
-                          ? "is-valid"
-                          : ""
-                      }`}
+                            ? "is-valid"
+                            : ""
+                        }`}
                       onChange={(event) => {
                         setValues((prev) => ({
                           ...prev,
@@ -196,13 +200,12 @@ function Login() {
                   <input
                     type="password"
                     id="validationDefault01"
-                    className={`form-control ${
-                      validationErrors.pass
+                    className={`form-control ${validationErrors.pass
                         ? "is-invalid"
                         : fieldValidity.pass
-                        ? "is-valid"
-                        : ""
-                    }`}
+                          ? "is-valid"
+                          : ""
+                      }`}
                     onChange={(event) => {
                       setValues((prev) => ({
                         ...prev,
@@ -258,9 +261,8 @@ function Login() {
                       event.preventDefault();
                       handleSubmission(event);
                     }}
-                    className={`btn btn-primary justify-content-center ${
-                      submitButtonDisabled ? "disabled" : ""
-                    }`}
+                    className={`btn btn-primary justify-content-center ${submitButtonDisabled ? "disabled" : ""
+                      }`}
                   >
                     {submitButtonDisabled ? "Logging In..." : "Login"}
                   </button>

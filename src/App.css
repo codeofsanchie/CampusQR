@@ -36,3 +36,35 @@
     transform: rotate(360deg);
   }
 }
+
+/* -------------------------------------------------------------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@900&display=swap');
+@font-face {
+  font-family: 'Rocher';
+  src: url(https://assets.codepen.io/9632/RocherColorGX.woff2);
+}
+@import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Righteous&display=swap');
+
+
+.title {
+  font-family: 'Righteous', cursive;
+  font-size: 35px;
+  position: relative;
+  text-shadow: -1px 1px 0 #ffffff, 1px 1px 0 #000, 1px -1px 0 #ffffff, -1px -1px 0 #000;
+  margin: 0 25%;
+  width: 100%;
+  background-image: linear-gradient(gold, #ffeca8);
+  background-size: 100% 10px;
+  background-repeat: no-repeat;
+  background-position: 100% 0%;
+  transition: background-size 0.7s, background-position 0.5s ease-in-out;
+  text-align: center; /* Center the text horizontally */
+}
+
+.title:hover {
+  background-size: 100% 100%;
+  background-position: 0% 100%;
+  transition: background-position 0.7s, background-size 0.5s ease-in-out;
+}

@@ -33,9 +33,10 @@ const Dashboard = () => {
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
-        <div className="col-md-6">
+        <div className="col-md-7">
+        <span className="title"> Campus QR </span>
           <div className="card">
-            <div className="card-header bg-primary text-light mb-3 text-center h2">
+            <div className="card-header bg-primary text-light mb-5 text-center h2">
               Dashboard
             </div>
             <div className="card-body">
@@ -46,13 +47,15 @@ const Dashboard = () => {
                     {user.displayName || user.email}!
                   </h2>
                   {userData && (
-                    <p className="mb-3">
+                    <p className="mb-10">
                       First Name: {userData.firstName} | Last Name: {userData.lastName}
                     </p>
                   )}
-                  <button className="btn btn-danger" onClick={handleLogout}>
+                  <div className='text-center'>
+                  <button className="btn btn-danger mb-5" onClick={handleLogout}>
                     Logout
                   </button>
+                  </div>
                 </>
               ) : (
                 <p className="text-center">

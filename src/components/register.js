@@ -62,7 +62,7 @@ const Register = () => {
     if (!user.email) {
       errors.email = "Email is required";
     } else if (
-      !user.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)
+      !user.email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
     ) {
       errors.email = "Invalid email";
     }
@@ -169,6 +169,7 @@ const Register = () => {
         <div className="container mt-5" data-bs-theme="dark">
           <div className="row justify-content-center">
             <div className="col-md-6">
+            <span className="title"> Campus QR </span>
               <div className="card">
                 <div className="card-header bg-primary text-light mb-3 text-center h2">
                   Register
@@ -286,7 +287,7 @@ const Register = () => {
 
                             // Check if emailValue matches the regular expression for a valid email
                             const isEmailValid =
-                            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+                            /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
                                 emailValue
                               );
 
